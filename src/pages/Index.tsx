@@ -44,19 +44,19 @@ const Index = () => {
         isMobile ? 'relative' : 'sticky top-0'
       }`}>
         <div className="container mx-auto px-6 py-4 sm:py-8">
-          <div className="flex flex-col sm:flex-row justify-between items-center gap-4 sm:gap-6">
+          <div className="flex flex-row justify-between items-center gap-4 sm:gap-6">
             {/* Left Side - Title */}
-            <div className="text-center sm:text-left">
-              <h1 className="text-3xl sm:text-4xl lg:text-5xl xl:text-6xl font-bold text-foreground mb-2">
+            <div className="text-left">
+              <h1 className="text-2xl sm:text-3xl lg:text-4xl xl:text-5xl font-bold text-foreground mb-2">
                 Remedios Raffle 2025
               </h1>
-              <div className="w-48 sm:w-64 mt-3 h-1 bg-gradient-to-r from-primary to-primary-glow mx-auto sm:mx-0 rounded-full"></div>
+              <div className="w-32 sm:w-48 lg:w-64 mt-3 h-1 bg-gradient-to-r from-primary to-primary-glow rounded-full"></div>
             </div>
             
             {/* Right Side - Ticket Count */}
-            <div className="text-center sm:text-right">
-              <div className="bg-primary/10 border border-primary/20 rounded-2xl px-4 sm:px-6 py-3 sm:py-4">
-                <div className="text-xl sm:text-2xl font-bold text-primary mb-1">
+            <div className="text-right">
+              <div className="bg-primary/10 border border-primary/20 rounded-2xl px-3 sm:px-6 py-3 sm:py-4">
+                <div className="text-lg sm:text-xl lg:text-2xl font-bold text-primary mb-1">
                   {ticketCount}
                 </div>
                 <div className="text-xs sm:text-sm text-muted-foreground font-medium">

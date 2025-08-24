@@ -7,6 +7,7 @@ import { RadioGroup, RadioGroupItem } from "@/components/ui/radio-group";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { ConfirmationDialog } from "./ConfirmationDialog";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface TicketData {
   name: string;
@@ -28,6 +29,7 @@ export const TicketForm = () => {
   });
   const [showConfirmation, setShowConfirmation] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const isMobile = useIsMobile();
 
   const formatTicketNumber = (num: string): string => {
     const number = parseInt(num) || 0;
@@ -142,37 +144,37 @@ export const TicketForm = () => {
 
   return (
     <Card className="w-full max-w-3xl card-modern">
-      <CardHeader className="pb-8 text-center">
-        <CardTitle className="text-3xl font-bold text-foreground mb-2">
+      <CardHeader className="pb-6 sm:pb-8 text-center">
+        <CardTitle className="text-2xl sm:text-3xl font-bold text-foreground mb-2">
           Ticket Registration
         </CardTitle>
-        <p className="text-muted-foreground">Register your raffle tickets securely</p>
+        <p className="text-sm sm:text-base text-muted-foreground">Register your raffle tickets securely</p>
       </CardHeader>
       
-      <CardContent className="p-8">
+      <CardContent className="p-4 sm:p-8">
         <form onSubmit={handleSubmit} className="form-layout">
           {/* Ticket Option Selection */}
           <div className="form-group">
-            <Label className="form-label text-base">Ticket Selection</Label>
+            <Label className="form-label text-sm sm:text-base">Ticket Selection</Label>
             <RadioGroup 
               value={option} 
               onValueChange={(value: "single" | "range") => setOption(value)}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4 mt-3"
             >
-              <div className="flex items-center space-x-3 p-4 rounded-xl border border-border/60 hover:border-primary/40 transition-all duration-200 cursor-pointer bg-muted/20">
+              <div className="flex items-center space-x-3 p-3 sm:p-4 rounded-xl border border-border/60 hover:border-primary/40 transition-all duration-200 cursor-pointer bg-muted/20">
                 <RadioGroupItem value="single" id="single" className="text-primary" />
-                <Label htmlFor="single" className="cursor-pointer font-medium">Single Ticket</Label>
+                <Label htmlFor="single" className="cursor-pointer font-medium text-sm sm:text-base">Single Ticket</Label>
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-xl border border-border/60 hover:border-primary/40 transition-all duration-200 cursor-pointer bg-muted/20">
+              <div className="flex items-center space-x-3 p-3 sm:p-4 rounded-xl border border-border/60 hover:border-primary/40 transition-all duration-200 cursor-pointer bg-muted/20">
                 <RadioGroupItem value="range" id="range" className="text-primary" />
-                <Label htmlFor="range" className="cursor-pointer font-medium">Range of Tickets</Label>
+                <Label htmlFor="range" className="cursor-pointer font-medium text-sm sm:text-base">Range of Tickets</Label>
               </div>
             </RadioGroup>
           </div>
 
           {/* Ticket Number Input */}
           <div className="form-group">
-            <Label className="form-label text-base">Ticket Numbers</Label>
+            <Label className="form-label text-sm sm:text-base">Ticket Numbers</Label>
             {option === "single" ? (
               <div className="space-y-3 mt-3">
                 <Input
@@ -181,18 +183,22 @@ export const TicketForm = () => {
                   placeholder="Enter ticket number (1-20000)"
                   value={singleTicket}
                   onChange={(e) => handleTicketNumberChange(e.target.value, "single")}
-                  className="input-modern text-lg font-mono h-14"
+                  className={`input-modern font-mono ${
+                    isMobile 
+                      ? 'text-xs h-12' 
+                      : 'text-lg h-14'
+                  }`}
                 />
                 {singleTicket && (
                   <div className="status-info border-primary/20 bg-primary/5">
-                    <p className="text-sm font-medium text-primary">
+                    <p className="text-xs sm:text-sm font-medium text-primary">
                       Formatted: {formatTicketNumber(singleTicket)}
                     </p>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-3">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-3">
                 <div className="space-y-3">
                   <Input
                     id="rangeStart"
@@ -200,7 +206,11 @@ export const TicketForm = () => {
                     placeholder="Start number"
                     value={rangeStart}
                     onChange={(e) => handleTicketNumberChange(e.target.value, "start")}
-                    className="input-modern text-lg font-mono h-14"
+                    className={`input-modern font-mono ${
+                      isMobile 
+                        ? 'text-xs h-12' 
+                        : 'text-lg h-14'
+                    }`}
                   />
                   {rangeStart && (
                     <div className="status-info border-primary/20 bg-primary/5">
@@ -217,7 +227,11 @@ export const TicketForm = () => {
                     placeholder="End number"
                     value={rangeEnd}
                     onChange={(e) => handleTicketNumberChange(e.target.value, "end")}
-                    className="input-modern text-lg font-mono h-14"
+                    className={`input-modern font-mono ${
+                      isMobile 
+                        ? 'text-xs h-12' 
+                        : 'text-lg h-14'
+                    }`}
                   />
                   {rangeEnd && (
                     <div className="status-info border-primary/20 bg-primary/5">
@@ -233,56 +247,74 @@ export const TicketForm = () => {
 
           {/* Customer Information */}
           <div className="form-group">
-            <Label className="form-label text-base">Customer Information</Label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-3">
+            <Label className="form-label text-sm sm:text-base">Customer Information</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4 sm:gap-6 mt-3">
               <div className="form-group">
-                <Label htmlFor="name" className="form-label">Full Name</Label>
+                <Label htmlFor="name" className="form-label text-sm sm:text-base">Full Name</Label>
                 <Input
                   id="name"
                   type="text"
                   placeholder="Enter full name"
                   value={ticketData.name}
                   onChange={(e) => setTicketData({ ...ticketData, name: e.target.value })}
-                  className="input-modern h-12"
+                  className={`input-modern ${
+                    isMobile 
+                      ? 'h-11 placeholder:text-sm' 
+                      : 'h-12 placeholder:text-base'
+                  }`}
                 />
               </div>
               <div className="form-group">
-                <Label htmlFor="contact" className="form-label">Contact Number</Label>
+                <Label htmlFor="contact" className="form-label text-sm sm:text-base">Contact Number</Label>
                 <Input
                   id="contact"
                   type="text"
                   placeholder="Enter contact number"
                   value={ticketData.contact}
                   onChange={(e) => setTicketData({ ...ticketData, contact: e.target.value })}
-                  className="input-modern h-12"
+                  className={`input-modern ${
+                    isMobile 
+                      ? 'h-11 placeholder:text-sm' 
+                      : 'h-12 placeholder:text-base'
+                  }`}
                 />
               </div>
               <div className="form-group sm:col-span-2">
-                <Label htmlFor="address" className="form-label">Address</Label>
+                <Label htmlFor="address" className="form-label text-sm sm:text-base">Address</Label>
                 <Input
                   id="address"
                   type="text"
                   placeholder="Enter complete address"
                   value={ticketData.address}
                   onChange={(e) => setTicketData({ ...ticketData, address: e.target.value })}
-                  className="input-modern h-12"
+                  className={`input-modern ${
+                    isMobile 
+                      ? 'h-11 placeholder:text-sm' 
+                      : 'h-12 placeholder:text-base'
+                  }`}
                 />
               </div>
               <div className="form-group sm:col-span-2">
-                <Label htmlFor="careOf" className="form-label">Care Of</Label>
+                <Label htmlFor="careOf" className="form-label text-sm sm:text-base">Care Of</Label>
                 <Input
                   id="careOf"
                   type="text"
                   placeholder="Enter care of information"
                   value={ticketData.careOf}
                   onChange={(e) => setTicketData({ ...ticketData, careOf: e.target.value })}
-                  className="input-modern h-12"
+                  className={`input-modern ${
+                    isMobile 
+                      ? 'h-11 placeholder:text-sm' 
+                      : 'h-12 placeholder:text-base'
+                  }`}
                 />
               </div>
             </div>
           </div>
 
-          <Button type="submit" className="w-full h-14 text-lg font-semibold btn-primary mt-8">
+          <Button type="submit" className={`w-full font-semibold btn-primary mt-6 sm:mt-8 ${
+            isMobile ? 'h-12 text-base' : 'h-14 text-lg'
+          }`}>
             Submit Registration
           </Button>
         </form>

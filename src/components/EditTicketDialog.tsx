@@ -6,6 +6,7 @@ import { Dialog, DialogContent, DialogHeader, DialogTitle } from "@/components/u
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
 import { Tables } from "@/integrations/supabase/types";
+import { useIsMobile } from "@/hooks/use-mobile";
 
 interface EditTicketDialogProps {
   isOpen: boolean;
@@ -23,6 +24,7 @@ export const EditTicketDialog = ({ isOpen, onClose, ticket, onTicketUpdated }: E
   });
   const [isLoading, setIsLoading] = useState(false);
   const [showConfirmation, setShowConfirmation] = useState(false);
+  const isMobile = useIsMobile();
 
   const handleInputChange = (field: string, value: string) => {
     setFormData(prev => ({
@@ -102,83 +104,113 @@ export const EditTicketDialog = ({ isOpen, onClose, ticket, onTicketUpdated }: E
     <>
       {/* Edit Dialog */}
       <Dialog open={isOpen} onOpenChange={onClose}>
-        <DialogContent className="max-w-2xl">
+        <DialogContent className={`${
+          isMobile 
+            ? 'w-[92vw] max-w-none mx-auto p-4' 
+            : 'max-w-2xl'
+        }`}>
           <DialogHeader>
-            <DialogTitle className="text-2xl font-bold">Edit Ticket Information</DialogTitle>
+            <DialogTitle className={`font-bold ${
+              isMobile ? 'text-xl' : 'text-2xl'
+            }`}>Edit Ticket Information</DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-6 py-4">
-            <div className="text-center p-4 bg-muted/30 rounded-lg border border-border/40">
-              <div className="text-sm font-medium text-muted-foreground mb-2">Ticket Number</div>
-              <div className="text-2xl font-bold text-primary font-mono">{ticket.ticket_number}</div>
+          <div className={`space-y-4 sm:space-y-6 py-2 sm:py-4`}>
+            <div className="text-center p-3 sm:p-4 bg-muted/30 rounded-lg border border-border/40">
+              <div className={`font-medium text-muted-foreground mb-2 ${
+                isMobile ? 'text-xs' : 'text-sm'
+              }`}>Ticket Number</div>
+              <div className={`font-bold text-primary font-mono ${
+                isMobile ? 'text-xl' : 'text-2xl'
+              }`}>{ticket.ticket_number}</div>
             </div>
 
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-3 sm:gap-4">
               <div className="space-y-2">
-                <Label htmlFor="edit-name" className="text-sm font-semibold">
+                <Label htmlFor="edit-name" className={`font-semibold ${
+                  isMobile ? 'text-xs' : 'text-sm'
+                }`}>
                   Customer Name *
                 </Label>
                 <Input
                   id="edit-name"
                   value={formData.name}
                   onChange={(e) => handleInputChange("name", e.target.value)}
-                  className="h-11"
+                  className={`${
+                    isMobile ? 'h-10 text-sm' : 'h-11 text-base'
+                  }`}
                   placeholder="Enter customer name"
                 />
               </div>
 
               <div className="space-y-2">
-                <Label htmlFor="edit-contact" className="text-sm font-semibold">
+                <Label htmlFor="edit-contact" className={`font-semibold ${
+                  isMobile ? 'text-xs' : 'text-sm'
+                }`}>
                   Contact Number *
                 </Label>
                 <Input
                   id="edit-contact"
                   value={formData.contact}
                   onChange={(e) => handleInputChange("contact", e.target.value)}
-                  className="h-11"
+                  className={`${
+                    isMobile ? 'h-10 text-sm' : 'h-11 text-base'
+                  }`}
                   placeholder="Enter contact number"
                 />
               </div>
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="edit-care-of" className="text-sm font-semibold">
+              <Label htmlFor="edit-care-of" className={`font-semibold ${
+                isMobile ? 'text-xs' : 'text-sm'
+              }`}>
                 Care Of
               </Label>
               <Input
                 id="edit-care-of"
                 value={formData.careOf}
                 onChange={(e) => handleInputChange("careOf", e.target.value)}
-                className="h-11"
+                className={`${
+                  isMobile ? 'h-10 text-sm' : 'h-11 text-base'
+                }`}
                 placeholder="Enter care of (optional)"
               />
             </div>
 
             <div className="space-y-2">
-              <Label htmlFor="edit-address" className="text-sm font-semibold">
+              <Label htmlFor="edit-address" className={`font-semibold ${
+                isMobile ? 'text-xs' : 'text-sm'
+              }`}>
                 Complete Address *
               </Label>
               <Input
                 id="edit-address"
                 value={formData.address}
                 onChange={(e) => handleInputChange("address", e.target.value)}
-                className="h-11"
+                className={`${
+                  isMobile ? 'h-10 text-sm' : 'h-11 text-base'
+                }`}
                 placeholder="Enter complete address"
               />
             </div>
 
-            <div className="flex flex-col sm:flex-row gap-3 pt-4">
+            <div className={`flex flex-col sm:flex-row gap-3 pt-2 sm:pt-4`}>
               <Button
                 onClick={handleConfirmSave}
                 disabled={isLoading}
-                className="flex-1 bg-primary hover:bg-primary/90"
+                className={`flex-1 bg-primary hover:bg-primary/90 ${
+                  isMobile ? 'h-10 text-sm' : 'h-11 text-base'
+                }`}
               >
                 Save Changes
               </Button>
               <Button
                 onClick={handleCancelEdit}
                 variant="outline"
-                className="flex-1"
+                className={`flex-1 ${
+                  isMobile ? 'h-10 text-sm' : 'h-11 text-base'
+                }`}
               >
                 Cancel
               </Button>
@@ -189,52 +221,86 @@ export const EditTicketDialog = ({ isOpen, onClose, ticket, onTicketUpdated }: E
 
       {/* Confirmation Dialog */}
       <Dialog open={showConfirmation} onOpenChange={setShowConfirmation}>
-        <DialogContent className="max-w-md">
+        <DialogContent className={`${
+          isMobile 
+            ? 'w-[92vw] max-w-none mx-auto p-4' 
+            : 'max-w-md'
+        }`}>
           <DialogHeader>
-            <DialogTitle className="text-xl font-bold">Confirm Changes</DialogTitle>
+            <DialogTitle className={`font-bold ${
+              isMobile ? 'text-lg' : 'text-xl'
+            }`}>Confirm Changes</DialogTitle>
           </DialogHeader>
           
-          <div className="space-y-4 py-4">
-            <div className="text-center p-4 bg-muted/30 rounded-lg">
-              <div className="text-sm font-medium text-muted-foreground mb-2">Ticket Number</div>
-              <div className="text-xl font-bold text-primary font-mono">{ticket.ticket_number}</div>
+          <div className={`space-y-3 sm:space-y-4 py-2 sm:py-4`}>
+            <div className="text-center p-3 sm:p-4 bg-muted/30 rounded-lg">
+              <div className={`font-medium text-muted-foreground mb-2 ${
+                isMobile ? 'text-xs' : 'text-sm'
+              }`}>Ticket Number</div>
+              <div className={`font-bold text-primary font-mono ${
+                isMobile ? 'text-lg' : 'text-xl'
+              }`}>{ticket.ticket_number}</div>
             </div>
 
-            <div className="space-y-3">
+            <div className="space-y-2 sm:space-y-3">
               <div className="flex justify-between">
-                <span className="font-medium">Name:</span>
-                <span className="text-muted-foreground">{formData.name}</span>
+                <span className={`font-medium ${
+                  isMobile ? 'text-xs' : 'text-sm'
+                }`}>Name:</span>
+                <span className={`text-muted-foreground ${
+                  isMobile ? 'text-xs' : 'text-sm'
+                }`}>{formData.name}</span>
               </div>
               <div className="flex justify-between">
-                <span className="font-medium">Contact:</span>
-                <span className="text-muted-foreground">{formData.contact}</span>
+                <span className={`font-medium ${
+                  isMobile ? 'text-xs' : 'text-sm'
+                }`}>Contact:</span>
+                <span className={`text-muted-foreground ${
+                  isMobile ? 'text-xs' : 'text-sm'
+                }`}>{formData.contact}</span>
               </div>
               <div className="flex justify-between">
-                <span className="font-medium">Care Of:</span>
-                <span className="text-muted-foreground">{formData.careOf || "—"}</span>
+                <span className={`font-medium ${
+                  isMobile ? 'text-xs' : 'text-sm'
+                }`}>Care Of:</span>
+                <span className={`text-muted-foreground ${
+                  isMobile ? 'text-xs' : 'text-sm'
+                }`}>{formData.careOf || "—"}</span>
               </div>
               <div className="flex justify-between">
-                <span className="font-medium">Address:</span>
-                <span className="text-muted-foreground max-w-[200px] truncate">{formData.address}</span>
+                <span className={`font-medium ${
+                  isMobile ? 'text-xs' : 'text-sm'
+                }`}>Address:</span>
+                <span className={`text-muted-foreground truncate ${
+                  isMobile ? 'text-xs max-w-[120px]' : 'text-sm max-w-[200px]'
+                }`}>{formData.address}</span>
               </div>
             </div>
 
-            <div className="text-sm text-muted-foreground text-center">
+            <div className={`text-muted-foreground text-center ${
+              isMobile ? 'text-xs' : 'text-sm'
+            }`}>
               The registration date will be updated to the current time.
             </div>
 
-            <div className="flex gap-3">
+            <div className={`flex gap-3 ${
+              isMobile ? 'flex-col' : 'flex-row'
+            }`}>
               <Button
                 onClick={handleSave}
                 disabled={isLoading}
-                className="flex-1 bg-primary hover:bg-primary/90"
+                className={`flex-1 bg-primary hover:bg-primary/90 ${
+                  isMobile ? 'h-10 text-sm' : 'h-11 text-base'
+                }`}
               >
                 {isLoading ? "Saving..." : "Confirm & Save"}
               </Button>
               <Button
                 onClick={() => setShowConfirmation(false)}
                 variant="outline"
-                className="flex-1"
+                className={`flex-1 ${
+                  isMobile ? 'h-10 text-sm' : 'h-11 text-base'
+                }`}
               >
                 Cancel
               </Button>
