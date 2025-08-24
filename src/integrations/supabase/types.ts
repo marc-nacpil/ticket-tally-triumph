@@ -17,7 +17,7 @@ export type Database = {
       tickets: {
         Row: {
           address: string
-          care_of: string
+          careOf: string
           contact: string
           created_at: string
           id: string
@@ -26,7 +26,7 @@ export type Database = {
         }
         Insert: {
           address: string
-          care_of: string
+          careOf: string
           contact: string
           created_at?: string
           id?: string
@@ -35,7 +35,7 @@ export type Database = {
         }
         Update: {
           address?: string
-          care_of?: string
+          careOf?: string
           contact?: string
           created_at?: string
           id?: string

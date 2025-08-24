@@ -1,6 +1,7 @@
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TicketForm } from "@/components/TicketForm";
 import { TicketLookup } from "@/components/TicketLookup";
+import { EditTickets } from "@/components/EditTickets";
 import { AdminPanel } from "@/components/AdminPanel";
 import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
@@ -94,6 +95,16 @@ const Index = () => {
                     >
                       Lookup Ticket
                     </button>
+                    <button
+                      onClick={() => setActiveTab("edit")}
+                      className={`w-full p-4 rounded-xl border transition-all duration-200 text-left font-medium ${
+                        activeTab === "edit"
+                          ? "bg-primary text-primary-foreground border-primary shadow-lg"
+                          : "bg-muted/30 text-foreground border-border/40 hover:bg-muted/50 hover:border-primary/30"
+                      }`}
+                    >
+                      Edit Tickets
+                    </button>
                   </div>
                 </div>
               </div>
@@ -107,6 +118,10 @@ const Index = () => {
               
               {activeTab === "lookup" && (
                 <TicketLookup />
+              )}
+
+              {activeTab === "edit" && (
+                <EditTickets />
               )}
             </div>
           </div>

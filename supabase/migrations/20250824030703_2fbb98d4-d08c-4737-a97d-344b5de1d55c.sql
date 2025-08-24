@@ -5,7 +5,7 @@ CREATE TABLE public.tickets (
   name TEXT NOT NULL,
   address TEXT NOT NULL,
   contact TEXT NOT NULL,
-  care_of TEXT NOT NULL,
+  careOf TEXT NOT NULL,
   created_at TIMESTAMP WITH TIME ZONE NOT NULL DEFAULT now()
 );
 
