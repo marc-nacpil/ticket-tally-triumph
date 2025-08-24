@@ -2,24 +2,62 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { TicketForm } from "@/components/TicketForm";
 import { TicketLookup } from "@/components/TicketLookup";
 import { AdminPanel } from "@/components/AdminPanel";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { Button } from "@/components/ui/button";
 import { Settings } from "lucide-react";
+import { supabase } from "@/integrations/supabase/client";
 
 const Index = () => {
   const [showAdmin, setShowAdmin] = useState(false);
   const [activeTab, setActiveTab] = useState("register");
+  const [ticketCount, setTicketCount] = useState(0);
+
+  // Fetch ticket count from database
+  useEffect(() => {
+    const fetchTicketCount = async () => {
+      try {
+        const { count, error } = await supabase
+          .from('tickets')
+          .select('*', { count: 'exact', head: true });
+
+        if (error) {
+          console.error('Error fetching ticket count:', error);
+        } else {
+          setTicketCount(count || 0);
+        }
+      } catch (error) {
+        console.error('Error fetching ticket count:', error);
+      }
+    };
+
+    fetchTicketCount();
+  }, []);
 
   return (
     <div className="min-h-screen bg-background">
       {/* Header Section */}
       <header className="border-b border-border/40 bg-background/80 backdrop-blur-sm sticky top-0 z-40">
         <div className="container mx-auto px-6 py-8">
-          <div className="text-center">
-            <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-2">
-              Remedios Raffle 2025
-            </h1>
-            <div className="w-24 h-1 bg-gradient-to-r from-primary to-primary-glow mx-auto rounded-full"></div>
+          <div className="flex flex-col sm:flex-row justify-between items-center gap-6">
+            {/* Left Side - Title */}
+            <div className="text-center sm:text-left">
+              <h1 className="text-4xl sm:text-5xl lg:text-6xl font-bold text-foreground mb-2">
+                Remedios Raffle 2025
+              </h1>
+              <div className="w-64 mt-3 h-1 bg-gradient-to-r from-primary to-primary-glow mx-auto sm:mx-0 rounded-full"></div>
+            </div>
+            
+            {/* Right Side - Ticket Count */}
+            <div className="text-center sm:text-right">
+              <div className="bg-primary/10 border border-primary/20 rounded-2xl px-6 py-4">
+                <div className="text-2xl font-bold text-primary mb-1">
+                  {ticketCount}
+                </div>
+                <div className="text-sm text-muted-foreground font-medium">
+                  Registered Tickets
+                </div>
+              </div>
+            </div>
           </div>
         </div>
       </header>
