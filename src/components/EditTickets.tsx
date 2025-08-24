@@ -5,17 +5,17 @@ import { Label } from "@/components/ui/label";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { toast } from "@/hooks/use-toast";
 import { supabase } from "@/integrations/supabase/client";
-
+import { EditTicketDialog } from "./EditTicketDialog";
 import { Tables } from "@/integrations/supabase/types";
 
 interface TicketInfo extends Tables<"tickets"> {}
 
-export const TicketLookup = () => {
+export const EditTickets = () => {
   const [ticketNumber, setTicketNumber] = useState("");
   const [ticketInfo, setTicketInfo] = useState<TicketInfo | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [notFound, setNotFound] = useState(false);
-
+  const [showEditDialog, setShowEditDialog] = useState(false);
 
   const formatTicketNumber = (num: string): string => {
     const number = parseInt(num) || 0;
@@ -67,16 +67,18 @@ export const TicketLookup = () => {
     return date.toLocaleString();
   };
 
-
+  const handleTicketUpdated = (updatedTicket: TicketInfo) => {
+    setTicketInfo(updatedTicket);
+  };
 
   return (
     <div>
       <Card className="w-full max-w-3xl card-modern">
         <CardHeader className="pb-8 text-center">
           <CardTitle className="text-3xl font-bold text-foreground mb-2">
-            Ticket Lookup
+            Edit Ticket Information
           </CardTitle>
-          <p className="text-muted-foreground">Find your ticket information quickly</p>
+          <p className="text-muted-foreground">Search for a ticket to edit its information</p>
         </CardHeader>
         
         <CardContent className="p-8">
@@ -86,7 +88,7 @@ export const TicketLookup = () => {
               <div className="flex flex-col sm:flex-row gap-4 mt-3">
                 <div className="flex-1">
                   <Input
-                    id="lookupNumber"
+                    id="editNumber"
                     type="text"
                     placeholder="Enter ticket number (1-20000)"
                     value={ticketNumber}
@@ -106,7 +108,7 @@ export const TicketLookup = () => {
                   disabled={isLoading || !ticketNumber}
                   className="btn-primary h-14 px-8 text-lg font-semibold sm:mt-0"
                 >
-                  {isLoading ? "Searching..." : "Lookup"}
+                  {isLoading ? "Searching..." : "Search"}
                 </Button>
               </div>
             </div>
@@ -171,7 +173,15 @@ export const TicketLookup = () => {
                       </div>
                     </div>
 
-
+                    {/* Edit Button */}
+                    <div className="flex justify-center pt-4">
+                      <Button
+                        onClick={() => setShowEditDialog(true)}
+                        className="bg-primary hover:bg-primary/90 text-primary-foreground px-8 py-3 text-lg font-semibold"
+                      >
+                        Edit Ticket Information
+                      </Button>
+                    </div>
                   </div>
                 </CardContent>
               </Card>
@@ -198,7 +208,15 @@ export const TicketLookup = () => {
         </CardContent>
       </Card>
 
-
+      {/* Edit Ticket Dialog */}
+      {ticketInfo && (
+        <EditTicketDialog
+          isOpen={showEditDialog}
+          onClose={() => setShowEditDialog(false)}
+          ticket={ticketInfo}
+          onTicketUpdated={handleTicketUpdated}
+        />
+      )}
     </div>
   );
 }; 
