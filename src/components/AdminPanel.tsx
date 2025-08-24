@@ -50,23 +50,28 @@ export const AdminPanel = () => {
 
   return (
     <>
-      <Card className="w-full max-w-md">
-        <CardHeader>
-          <CardTitle className="text-destructive">Admin Panel</CardTitle>
+      <Card className="w-full max-w-md card-modern border-destructive/20">
+        <CardHeader className="pb-4">
+          <CardTitle className="text-xl font-bold text-center flex items-center justify-center gap-2">
+            ⚠️ Admin Panel
+          </CardTitle>
+          <p className="text-sm text-muted-foreground text-center">
+            Database management tools
+          </p>
         </CardHeader>
-        <CardContent>
-          <div className="space-y-4">
-            <p className="text-sm text-muted-foreground">
-              This action will permanently delete all tickets from the database. This cannot be undone.
+        <CardContent className="space-y-6">
+          <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20">
+            <p className="text-sm text-destructive font-medium text-center">
+              ⚠️ Warning: This action will permanently delete all tickets from the database. This cannot be undone.
             </p>
-            <Button 
-              variant="destructive" 
-              onClick={handleDeleteRequest}
-              className="w-full"
-            >
-              Clear Database
-            </Button>
           </div>
+          <Button 
+            variant="destructive" 
+            onClick={handleDeleteRequest}
+            className="w-full h-12 text-lg font-semibold bg-destructive hover:bg-destructive/90 shadow-lg hover:shadow-xl transition-all duration-300"
+          >
+            🗑️ Clear Database
+          </Button>
         </CardContent>
       </Card>
 
