@@ -59,6 +59,27 @@ This project is built with:
 - React
 - shadcn-ui
 - Tailwind CSS
+- Supabase (PostgreSQL database)
+
+## Environment Setup
+
+This project requires environment variables for Supabase configuration. Follow these steps:
+
+1. **Create a `.env` file** in the root directory
+2. **Add your Supabase credentials**:
+
+```bash
+# Supabase Configuration
+VITE_SUPABASE_URL=your_supabase_project_url_here
+VITE_SUPABASE_ANON_KEY=your_supabase_anon_key_here
+```
+
+3. **Get your credentials from Supabase**:
+   - Go to your Supabase project dashboard
+   - Navigate to Settings > API
+   - Copy the Project URL and anon/public key
+
+**Important**: The `.env` file is already added to `.gitignore` to prevent exposing sensitive credentials in your repository.
 
 ## How can I deploy this project?
 
