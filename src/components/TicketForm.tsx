@@ -141,76 +141,69 @@ export const TicketForm = () => {
   };
 
   return (
-    <Card className="w-full max-w-2xl card-modern">
-      <CardHeader className="pb-6">
-        <CardTitle className="text-2xl font-bold text-center">🎟️ Raffle Ticket Registration</CardTitle>
-        <p className="text-sm text-muted-foreground text-center">Register your tickets securely</p>
+    <Card className="w-full max-w-3xl card-modern">
+      <CardHeader className="pb-8 text-center">
+        <CardTitle className="text-3xl font-bold text-foreground mb-2">
+          Ticket Registration
+        </CardTitle>
+        <p className="text-muted-foreground">Register your raffle tickets securely</p>
       </CardHeader>
-      <CardContent className="space-y-8">
-        <form onSubmit={handleSubmit} className="space-y-8">
+      
+      <CardContent className="p-8">
+        <form onSubmit={handleSubmit} className="form-layout">
           {/* Ticket Option Selection */}
-          <div className="space-y-4">
-            <Label className="text-lg font-semibold flex items-center gap-2">
-              📋 Select Ticket Option
-            </Label>
+          <div className="form-group">
+            <Label className="form-label text-base">Ticket Selection</Label>
             <RadioGroup 
               value={option} 
               onValueChange={(value: "single" | "range") => setOption(value)}
-              className="grid grid-cols-1 sm:grid-cols-2 gap-4"
+              className="grid grid-cols-1 sm:grid-cols-2 gap-4 mt-3"
             >
-              <div className="flex items-center space-x-3 p-4 rounded-lg border border-border/50 hover:border-primary/50 transition-all duration-300 cursor-pointer">
+              <div className="flex items-center space-x-3 p-4 rounded-xl border border-border/60 hover:border-primary/40 transition-all duration-200 cursor-pointer bg-muted/20">
                 <RadioGroupItem value="single" id="single" className="text-primary" />
-                <Label htmlFor="single" className="cursor-pointer font-medium">🎫 Single Ticket</Label>
+                <Label htmlFor="single" className="cursor-pointer font-medium">Single Ticket</Label>
               </div>
-              <div className="flex items-center space-x-3 p-4 rounded-lg border border-border/50 hover:border-primary/50 transition-all duration-300 cursor-pointer">
+              <div className="flex items-center space-x-3 p-4 rounded-xl border border-border/60 hover:border-primary/40 transition-all duration-200 cursor-pointer bg-muted/20">
                 <RadioGroupItem value="range" id="range" className="text-primary" />
-                <Label htmlFor="range" className="cursor-pointer font-medium">📊 Range of Tickets</Label>
+                <Label htmlFor="range" className="cursor-pointer font-medium">Range of Tickets</Label>
               </div>
             </RadioGroup>
           </div>
 
           {/* Ticket Number Input */}
-          <div className="space-y-4">
-            <Label className="text-lg font-semibold flex items-center gap-2">
-              🔢 Ticket Numbers
-            </Label>
+          <div className="form-group">
+            <Label className="form-label text-base">Ticket Numbers</Label>
             {option === "single" ? (
-              <div className="space-y-3">
-                <Label htmlFor="singleTicket" className="text-sm font-medium text-muted-foreground">
-                  Enter ticket number (1-20000)
-                </Label>
+              <div className="space-y-3 mt-3">
                 <Input
                   id="singleTicket"
                   type="text"
-                  placeholder="Enter ticket number"
+                  placeholder="Enter ticket number (1-20000)"
                   value={singleTicket}
                   onChange={(e) => handleTicketNumberChange(e.target.value, "single")}
-                  className="text-lg font-mono h-12 bg-muted/30 border-border/50 focus:border-primary/50 transition-all duration-300"
+                  className="input-modern text-lg font-mono h-14"
                 />
                 {singleTicket && (
-                  <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
+                  <div className="status-info border-primary/20 bg-primary/5">
                     <p className="text-sm font-medium text-primary">
-                      ✅ Formatted: {formatTicketNumber(singleTicket)}
+                      Formatted: {formatTicketNumber(singleTicket)}
                     </p>
                   </div>
                 )}
               </div>
             ) : (
-              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+              <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-3">
                 <div className="space-y-3">
-                  <Label htmlFor="rangeStart" className="text-sm font-medium text-muted-foreground">
-                    Start Number
-                  </Label>
                   <Input
                     id="rangeStart"
                     type="text"
-                    placeholder="Start"
+                    placeholder="Start number"
                     value={rangeStart}
                     onChange={(e) => handleTicketNumberChange(e.target.value, "start")}
-                    className="text-lg font-mono h-12 bg-muted/30 border-border/50 focus:border-primary/50 transition-all duration-300"
+                    className="input-modern text-lg font-mono h-14"
                   />
                   {rangeStart && (
-                    <div className="p-2 bg-primary/10 rounded border border-primary/20">
+                    <div className="status-info border-primary/20 bg-primary/5">
                       <p className="text-xs font-medium text-primary">
                         Formatted: {formatTicketNumber(rangeStart)}
                       </p>
@@ -218,19 +211,16 @@ export const TicketForm = () => {
                   )}
                 </div>
                 <div className="space-y-3">
-                  <Label htmlFor="rangeEnd" className="text-sm font-medium text-muted-foreground">
-                    End Number
-                  </Label>
                   <Input
                     id="rangeEnd"
                     type="text"
-                    placeholder="End"
+                    placeholder="End number"
                     value={rangeEnd}
                     onChange={(e) => handleTicketNumberChange(e.target.value, "end")}
-                    className="text-lg font-mono h-12 bg-muted/30 border-border/50 focus:border-primary/50 transition-all duration-300"
+                    className="input-modern text-lg font-mono h-14"
                   />
                   {rangeEnd && (
-                    <div className="p-2 bg-primary/10 rounded border border-primary/20">
+                    <div className="status-info border-primary/20 bg-primary/5">
                       <p className="text-xs font-medium text-primary">
                         Formatted: {formatTicketNumber(rangeEnd)}
                       </p>
@@ -242,68 +232,58 @@ export const TicketForm = () => {
           </div>
 
           {/* Customer Information */}
-          <div className="space-y-6">
-            <Label className="text-lg font-semibold flex items-center gap-2">
-              👤 Customer Information
-            </Label>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
-              <div className="space-y-2">
-                <Label htmlFor="name" className="text-sm font-medium text-muted-foreground">
-                  Full Name
-                </Label>
+          <div className="form-group">
+            <Label className="form-label text-base">Customer Information</Label>
+            <div className="grid grid-cols-1 sm:grid-cols-2 gap-6 mt-3">
+              <div className="form-group">
+                <Label htmlFor="name" className="form-label">Full Name</Label>
                 <Input
                   id="name"
                   type="text"
                   placeholder="Enter full name"
                   value={ticketData.name}
                   onChange={(e) => setTicketData({ ...ticketData, name: e.target.value })}
-                  className="h-11 bg-muted/30 border-border/50 focus:border-primary/50 transition-all duration-300"
+                  className="input-modern h-12"
                 />
               </div>
-              <div className="space-y-2">
-                <Label htmlFor="contact" className="text-sm font-medium text-muted-foreground">
-                  Contact Number
-                </Label>
+              <div className="form-group">
+                <Label htmlFor="contact" className="form-label">Contact Number</Label>
                 <Input
                   id="contact"
                   type="text"
                   placeholder="Enter contact number"
                   value={ticketData.contact}
                   onChange={(e) => setTicketData({ ...ticketData, contact: e.target.value })}
-                  className="h-11 bg-muted/30 border-border/50 focus:border-primary/50 transition-all duration-300"
+                  className="input-modern h-12"
                 />
               </div>
-              <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="address" className="text-sm font-medium text-muted-foreground">
-                  Address
-                </Label>
+              <div className="form-group sm:col-span-2">
+                <Label htmlFor="address" className="form-label">Address</Label>
                 <Input
                   id="address"
                   type="text"
                   placeholder="Enter complete address"
                   value={ticketData.address}
                   onChange={(e) => setTicketData({ ...ticketData, address: e.target.value })}
-                  className="h-11 bg-muted/30 border-border/50 focus:border-primary/50 transition-all duration-300"
+                  className="input-modern h-12"
                 />
               </div>
-              <div className="space-y-2 sm:col-span-2">
-                <Label htmlFor="careOf" className="text-sm font-medium text-muted-foreground">
-                  Care Of
-                </Label>
+              <div className="form-group sm:col-span-2">
+                <Label htmlFor="careOf" className="form-label">Care Of</Label>
                 <Input
                   id="careOf"
                   type="text"
                   placeholder="Enter care of information"
                   value={ticketData.careOf}
                   onChange={(e) => setTicketData({ ...ticketData, careOf: e.target.value })}
-                  className="h-11 bg-muted/30 border-border/50 focus:border-primary/50 transition-all duration-300"
+                  className="input-modern h-12"
                 />
               </div>
             </div>
           </div>
 
-          <Button type="submit" className="w-full h-12 text-lg font-semibold btn-primary">
-            ✨ Submit Ticket Information
+          <Button type="submit" className="w-full h-14 text-lg font-semibold btn-primary mt-8">
+            Submit Registration
           </Button>
         </form>
 

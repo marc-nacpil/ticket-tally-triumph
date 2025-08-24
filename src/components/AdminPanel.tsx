@@ -51,26 +51,24 @@ export const AdminPanel = () => {
   return (
     <>
       <Card className="w-full max-w-md card-modern border-destructive/20">
-        <CardHeader className="pb-4">
-          <CardTitle className="text-xl font-bold text-center flex items-center justify-center gap-2">
-            ⚠️ Admin Panel
+        <CardHeader className="pb-6 text-center">
+          <CardTitle className="text-2xl font-bold text-foreground mb-2">
+            Admin Panel
           </CardTitle>
-          <p className="text-sm text-muted-foreground text-center">
-            Database management tools
-          </p>
+          <p className="text-muted-foreground">Database management tools</p>
         </CardHeader>
         <CardContent className="space-y-6">
-          <div className="p-4 bg-destructive/10 rounded-lg border border-destructive/20">
-            <p className="text-sm text-destructive font-medium text-center">
-              ⚠️ Warning: This action will permanently delete all tickets from the database. This cannot be undone.
+          <div className="status-error">
+            <p className="text-sm font-medium text-destructive text-center">
+              Warning: This action will permanently delete all tickets from the database. This cannot be undone.
             </p>
           </div>
           <Button 
             variant="destructive" 
             onClick={handleDeleteRequest}
-            className="w-full h-12 text-lg font-semibold bg-destructive hover:bg-destructive/90 shadow-lg hover:shadow-xl transition-all duration-300"
+            className="w-full h-14 text-lg font-semibold bg-destructive hover:bg-destructive/90 shadow-lg hover:shadow-xl transition-all duration-300"
           >
-            🗑️ Clear Database
+            Clear Database
           </Button>
         </CardContent>
       </Card>
@@ -78,28 +76,30 @@ export const AdminPanel = () => {
       <Dialog open={showDialog} onOpenChange={setShowDialog}>
         <DialogContent className="sm:max-w-md">
           <DialogHeader>
-            <DialogTitle className="text-destructive">Confirm Database Deletion</DialogTitle>
-            <DialogDescription>
-              This will permanently delete ALL tickets from the database. Type "admin" to confirm.
+            <DialogTitle className="text-destructive text-xl">Confirm Database Deletion</DialogTitle>
+            <DialogDescription className="text-base">
+              This will permanently delete ALL tickets from the database.
             </DialogDescription>
           </DialogHeader>
           
-          <div className="space-y-2">
-            <Label htmlFor="adminPassword">Password</Label>
+          <div className="space-y-3">
+            <Label htmlFor="adminPassword" className="form-label">Password</Label>
             <Input
               id="adminPassword"
               type="password"
               placeholder="Enter password"
               value={password}
               onChange={(e) => setPassword(e.target.value)}
+              className="input-modern h-12"
             />
           </div>
 
-          <DialogFooter className="flex gap-2">
+          <DialogFooter className="flex gap-3">
             <Button
               variant="outline"
               onClick={() => setShowDialog(false)}
               disabled={isDeleting}
+              className="h-11 px-6"
             >
               Cancel
             </Button>
@@ -107,6 +107,7 @@ export const AdminPanel = () => {
               variant="destructive"
               onClick={confirmDelete} 
               disabled={isDeleting || password !== "admin"}
+              className="h-11 px-6"
             >
               {isDeleting ? "Deleting..." : "Delete All"}
             </Button>

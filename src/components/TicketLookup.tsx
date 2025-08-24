@@ -72,76 +72,104 @@ export const TicketLookup = () => {
   };
 
   return (
-    <Card className="w-full max-w-2xl card-modern">
-      <CardHeader className="pb-6">
-        <CardTitle className="text-2xl font-bold text-center">🔍 Ticket Lookup</CardTitle>
-        <p className="text-sm text-muted-foreground text-center">Find your ticket information quickly</p>
+    <Card className="w-full max-w-3xl card-modern">
+      <CardHeader className="pb-8 text-center">
+        <CardTitle className="text-3xl font-bold text-foreground mb-2">
+          Ticket Lookup
+        </CardTitle>
+        <p className="text-muted-foreground">Find your ticket information quickly</p>
       </CardHeader>
-      <CardContent className="space-y-6">
-        <div className="space-y-4">
-          <div className="flex flex-col sm:flex-row gap-4">
-            <div className="flex-1 space-y-3">
-              <Label htmlFor="lookupNumber" className="text-lg font-semibold flex items-center gap-2">
-                🎟️ Ticket Number
-              </Label>
-              <Input
-                id="lookupNumber"
-                type="text"
-                placeholder="Enter ticket number (1-20000)"
-                value={ticketNumber}
-                onChange={(e) => handleTicketNumberChange(e.target.value)}
-                className="text-lg font-mono h-12 bg-muted/30 border-border/50 focus:border-primary/50 transition-all duration-300"
-              />
-              {ticketNumber && (
-                <div className="p-3 bg-primary/10 rounded-lg border border-primary/20">
-                  <p className="text-sm font-medium text-primary">
-                    🔍 Searching for: {formatTicketNumber(ticketNumber)}
-                  </p>
-                </div>
-              )}
+      
+      <CardContent className="p-8">
+        <div className="form-layout">
+          <div className="form-group">
+            <Label className="form-label text-base">Ticket Number</Label>
+            <div className="flex flex-col sm:flex-row gap-4 mt-3">
+              <div className="flex-1">
+                <Input
+                  id="lookupNumber"
+                  type="text"
+                  placeholder="Enter ticket number (1-20000)"
+                  value={ticketNumber}
+                  onChange={(e) => handleTicketNumberChange(e.target.value)}
+                  className="input-modern text-lg font-mono h-14"
+                />
+                {ticketNumber && (
+                  <div className="status-info border-primary/20 bg-primary/5 mt-3">
+                    <p className="text-sm font-medium text-primary">
+                      Searching for: {formatTicketNumber(ticketNumber)}
+                    </p>
+                  </div>
+                )}
+              </div>
+              <Button 
+                onClick={lookupTicket} 
+                disabled={isLoading || !ticketNumber}
+                className="btn-primary h-14 px-8 text-lg font-semibold sm:mt-0"
+              >
+                {isLoading ? "Searching..." : "Lookup"}
+              </Button>
             </div>
-            <Button 
-              onClick={lookupTicket} 
-              disabled={isLoading || !ticketNumber}
-              className="h-12 px-8 text-lg font-semibold btn-primary sm:mt-8"
-            >
-              {isLoading ? "🔄 Searching..." : "🔍 Lookup"}
-            </Button>
           </div>
 
-          {/* Results */}
+          {/* Results - Redesigned for better readability */}
           {ticketInfo && (
-            <Card className="bg-gradient-to-br from-primary/5 to-primary/10 border-primary/20 card-modern">
-              <CardHeader className="pb-4">
-                <CardTitle className="text-xl font-bold flex items-center gap-2">
-                  ✅ Ticket Found
+            <Card className="card-modern border-2 border-primary/20">
+              <CardHeader className="pb-6 border-b border-border/40">
+                <CardTitle className="text-2xl font-bold text-foreground flex items-center gap-3">
+                  <div className="w-3 h-3 bg-primary rounded-full"></div>
+                  Ticket Information
                 </CardTitle>
               </CardHeader>
-              <CardContent className="space-y-4">
-                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-                  <div className="p-3 bg-background/50 rounded-lg">
-                    <span className="text-sm font-medium text-muted-foreground block">Ticket Number</span>
-                    <span className="text-lg font-bold font-mono text-primary">{ticketInfo.ticket_number}</span>
+              <CardContent className="pt-6">
+                <div className="space-y-6">
+                  {/* Ticket Number - Highlighted */}
+                  <div className="text-center p-6 bg-muted/30 rounded-xl border border-border/40">
+                    <div className="text-sm font-medium text-muted-foreground mb-2">Ticket Number</div>
+                    <div className="text-4xl font-bold text-primary font-mono">{ticketInfo.ticket_number}</div>
                   </div>
-                  <div className="p-3 bg-background/50 rounded-lg">
-                    <span className="text-sm font-medium text-muted-foreground block">Name</span>
-                    <span className="text-lg font-semibold">{ticketInfo.name}</span>
+                  
+                  {/* Customer Details */}
+                  <div className="grid grid-cols-1 sm:grid-cols-2 gap-6">
+                    <div className="space-y-4">
+                      <div>
+                        <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Customer Name</div>
+                        <div className="text-xl font-semibold text-foreground p-3 bg-background rounded-lg border border-border/40">
+                          {ticketInfo.name}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Contact Number</div>
+                        <div className="text-lg text-foreground p-3 bg-background rounded-lg border border-border/40">
+                          {ticketInfo.contact}
+                        </div>
+                      </div>
+                    </div>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Care Of</div>
+                        <div className="text-lg text-foreground p-3 bg-background rounded-lg border border-border/40">
+                          {ticketInfo.care_of || "—"}
+                        </div>
+                      </div>
+                      
+                      <div>
+                        <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Registration Date</div>
+                        <div className="text-lg text-foreground p-3 bg-background rounded-lg border border-border/40">
+                          {formatDate(ticketInfo.created_at)}
+                        </div>
+                      </div>
+                    </div>
                   </div>
-                  <div className="p-3 bg-background/50 rounded-lg sm:col-span-2">
-                    <span className="text-sm font-medium text-muted-foreground block">Address</span>
-                    <span className="text-base">{ticketInfo.address}</span>
-                  </div>
-                  <div className="p-3 bg-background/50 rounded-lg">
-                    <span className="text-sm font-medium text-muted-foreground block">Contact</span>
-                    <span className="text-base">{ticketInfo.contact}</span>
-                  </div>
-                  <div className="p-3 bg-background/50 rounded-lg">
-                    <span className="text-sm font-medium text-muted-foreground block">Care Of</span>
-                    <span className="text-base">{ticketInfo.care_of}</span>
-                  </div>
-                  <div className="p-3 bg-background/50 rounded-lg sm:col-span-2">
-                    <span className="text-sm font-medium text-muted-foreground block">Registered</span>
-                    <span className="text-base font-medium">{formatDate(ticketInfo.created_at)}</span>
+                  
+                  {/* Address - Full Width */}
+                  <div>
+                    <div className="text-sm font-semibold text-muted-foreground uppercase tracking-wide mb-2">Complete Address</div>
+                    <div className="text-lg text-foreground p-4 bg-background rounded-lg border border-border/40">
+                      {ticketInfo.address}
+                    </div>
                   </div>
                 </div>
               </CardContent>
@@ -150,15 +178,17 @@ export const TicketLookup = () => {
 
           {notFound && (
             <Card className="bg-gradient-to-br from-destructive/10 to-destructive/5 border-destructive/30 card-modern">
-              <CardContent className="pt-6">
-                <div className="text-center space-y-2">
-                  <div className="text-4xl">❌</div>
-                  <p className="text-lg font-semibold text-destructive">
-                    Ticket Not Found
-                  </p>
-                  <p className="text-sm text-muted-foreground">
-                    Ticket number {formatTicketNumber(ticketNumber)} was not found in our database.
-                  </p>
+              <CardContent className="pt-8 pb-8">
+                <div className="text-center space-y-4">
+                  <div className="text-6xl text-destructive">×</div>
+                  <div>
+                    <p className="text-xl font-semibold text-destructive mb-2">
+                      Ticket Not Found
+                    </p>
+                    <p className="text-muted-foreground">
+                      Ticket number {formatTicketNumber(ticketNumber)} was not found in our database.
+                    </p>
+                  </div>
                 </div>
               </CardContent>
             </Card>
